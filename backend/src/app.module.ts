@@ -6,9 +6,10 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthCode } from "./models/authcode.entity";
 import { User } from "./models/user.entity";
 import { OrdersModule } from './orders/orders.module';
+import { StoresModule } from './stores/stores.module';
 
 @Module({
-	imports: [AuthModule, OrdersModule],
+	imports: [AuthModule, OrdersModule, StoresModule],
 	controllers: [AppController],
 	providers: [AppService],
 })
