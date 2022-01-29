@@ -6,9 +6,9 @@ import {
 	ManyToOne,
 	PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "./user.model";
+import { User } from "./user.entity";
 
-@Entity()
+@Entity("auth_codes")
 export class AuthCode extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;

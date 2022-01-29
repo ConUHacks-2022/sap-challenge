@@ -8,9 +8,9 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
-import { AuthCode } from "./authcode.model";
+import { AuthCode } from "./authcode.entity";
 
-@Entity()
+@Entity("users")
 export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty()
@@ -19,6 +19,18 @@ export class User extends BaseEntity {
 	@Column()
 	@ApiProperty()
 	email: string;
+
+	@Column()
+	@ApiProperty()
+	name: string;
+
+	@Column({ nullable: true })
+	@ApiProperty()
+	address?: string;
+
+	@Column()
+	@ApiProperty()
+	phone: string;
 
 	@Column()
 	@ApiProperty()
