@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { AuthCode } from "src/models/authcode.entity";
-import { User } from "src/models/user.entity";
+import { AuthCode } from "../models/authcode.entity";
+import { User } from "../models/user.entity";
 import fetch from "node-fetch";
 
 @Injectable()

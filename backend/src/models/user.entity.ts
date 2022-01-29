@@ -9,6 +9,7 @@ import {
 	UpdateDateColumn,
 } from "typeorm";
 import { AuthCode } from "./authcode.entity";
+import { Order } from "./order.entity";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -39,11 +40,14 @@ export class User extends BaseEntity {
 	@OneToMany(() => AuthCode, (code) => code.user)
 	codes: AuthCode[];
 
+	@OneToMany(() => Order, (order) => order.user)
+	orders: Order[];
+
 	@CreateDateColumn()
 	@ApiProperty()
 	created_at: Date;
 
 	@UpdateDateColumn()
 	@ApiProperty()
-	updated_at;
+	updated_at: Date;
 }

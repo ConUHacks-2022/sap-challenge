@@ -8,8 +8,8 @@ import {
 	CodeVerificationRequest,
 	MeResponse,
 	OperationStatus,
-} from "src/util/apiTypes";
-import { AuthUser } from "src/util/decorators";
+} from "../util/apiTypes";
+import { AuthUser } from "../util/decorators";
 import { User } from "../models/user.entity";
 import { AuthService } from "./auth.service";
 
