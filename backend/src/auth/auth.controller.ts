@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Res } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
@@ -6,8 +6,10 @@ import {
 	AuthResponse,
 	CodeRequest,
 	CodeVerificationRequest,
+	MeResponse,
 	OperationStatus,
 } from "src/util/apiTypes";
+import { AuthUser } from "src/util/decorators";
 import { User } from "../models/user.entity";
 import { AuthService } from "./auth.service";
 
@@ -51,6 +53,19 @@ export class AuthController {
 				errors: [(<Error>e).message],
 				user: null,
 			});
+		}
+	}
+
+	@Get("me")
+	public async me(@AuthUser() userId: number): Promise<MeResponse> {
+		try {
+			return {
+				user: await this.authService.me(userId),
+			};
+		} catch (e) {
+			return {
+				user: null,
+			};
 		}
 	}
 

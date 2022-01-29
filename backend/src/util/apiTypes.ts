@@ -31,3 +31,8 @@ export class AuthResponse extends OperationStatus {
 	@ApiProperty({ type: User })
 	user: User;
 }
+
+export class MeResponse {
+	@ApiProperty({ type: User })
+	user: User;
+}

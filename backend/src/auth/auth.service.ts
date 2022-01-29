@@ -72,6 +72,10 @@ export class AuthService {
 		throw new Error("Invalid code");
 	}
 
+	public async me(userId: number) {
+		return await User.findOne({ where: { id: userId } });
+	}
+
 	private async createAdmin() {
 		const admin = await User.findOne({ where: { email: "admin@example.com" } });
 		if (!admin) {
