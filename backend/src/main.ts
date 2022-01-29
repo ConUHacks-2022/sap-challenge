@@ -22,6 +22,6 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup("api", app, document);
 	app.use(cookieParser());
-	await app.listen(56000);
+	await app.listen(50000);
 }
 bootstrap();
