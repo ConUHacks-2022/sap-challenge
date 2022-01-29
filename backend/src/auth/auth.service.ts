@@ -49,6 +49,21 @@ export class AuthService {
 		Logger.debug(num);
 	}
 
+	public async verifyCode(code: number): Promise<User> {
+		const result = await AuthCode.findOne({
+			where: { code },
+			relations: ["user"],
+		});
+
+		if (result) {
+			const user = result.user;
+			AuthCode.delete({ id: result.id });
+			return user;
+		}
+
+		throw new Error("Invalid code");
+	}
+
 	private async createAdmin() {
 		const admin = await User.findOne({ where: { email: "admin@example.com" } });
 		if (!admin) {

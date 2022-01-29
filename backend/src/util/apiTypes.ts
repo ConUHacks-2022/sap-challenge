@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { User } from "src/models/user.entity";
 
 // Cookie
 export type CookiePayload = {
@@ -16,4 +17,14 @@ export class OperationStatus {
 export class CodeRequest {
 	@ApiProperty()
 	email: string;
+}
+
+export class CodeVerificationRequest {
+	@ApiProperty()
+	code: number;
+}
+
+export class AuthResponse extends OperationStatus {
+	@ApiProperty({ type: User })
+	user: User;
 }

@@ -1,8 +1,13 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Res } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
-import { CodeRequest, OperationStatus } from "src/util/apiTypes";
+import {
+	AuthResponse,
+	CodeRequest,
+	CodeVerificationRequest,
+	OperationStatus,
+} from "src/util/apiTypes";
 import { User } from "../models/user.entity";
 import { AuthService } from "./auth.service";
 
@@ -31,6 +36,24 @@ export class AuthController {
 		}
 	}
 
+	@Post("verifyCode")
+	@ApiResponse({ type: AuthResponse })
+	public async verifyCode(
+		@Body() body: CodeVerificationRequest,
+		@Res() response: Response
+	): Promise<void> {
+		try {
+			const user = await this.authService.verifyCode(body.code);
+			this.createAuthCookie(user, response);
+		} catch (e) {
+			response.send({
+				status: "FAILED",
+				errors: [(<Error>e).message],
+				user: null,
+			});
+		}
+	}
+
 	private createAuthCookie(user: User, response: Response): void {
 		const userId = user.id;
 		const payload = { userId: userId };
@@ -42,6 +65,9 @@ export class AuthController {
 				domain: process.env.BACKEND_HOST_NAME, // your domain here!
 				expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
 			})
-			.send({ user, errors: [] });
+			.send({
+				status: "SUCCESS",
+				user: user,
+			});
 	}
 }
