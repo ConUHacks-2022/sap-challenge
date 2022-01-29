@@ -2,6 +2,8 @@ import {
 	BaseEntity,
 	Column,
 	Entity,
+	JoinTable,
+	ManyToMany,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
@@ -18,7 +20,8 @@ export class Schedule extends BaseEntity {
 	@ManyToOne(() => PickupLocation, (location) => location.schedules)
 	pickup_location: PickupLocation;
 
-	@OneToMany(() => Employee, (employee) => employee.schedule)
+	@ManyToMany(() => Employee, (employee) => employee.schedules)
+	@JoinTable()
 	employees: Employee[];
 
 	@Column()

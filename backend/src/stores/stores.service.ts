@@ -6,6 +6,9 @@ import fetch from "node-fetch";
 import { Store } from "src/models/store.entity";
 import { PickupLocation } from "src/models/pickupLocations.entity";
 import { Employee } from "src/models/employee.entity";
+import { Schedule } from "src/models/sechule";
+import e from "express";
+import { BookPickupsRequest } from "src/util/apiTypes";
 
 @Injectable()
 export class StoresService {
@@ -23,11 +26,11 @@ export class StoresService {
 		store_id: number,
 		time: Date
 	) {
-		const user = await User.findOne({ where: { id: userId } });
+		//const user = await User.findOne({ where: { id: userId } });
 		const order = await Order.findOne({ where: { id: order_id } });
 		const store = await Store.findOne({
 			where: { id: store_id },
-			relations: ["pickup_location", "employee"],
+			relations: ["pickup_locations", "employees"],
 		});
 
 		// All the restriction here
@@ -36,7 +39,8 @@ export class StoresService {
 		const employeesNeeded = order.parcel_size == "L" ? 2 : 1;
 		for (const location of store.pickup_locations) {
 			if (
-				(await this.availableEmployees(store, order)) >= employeesNeeded &&
+				(await this.availableEmployees(store, order, time)).length >=
+					employeesNeeded &&
 				location.parcel_size == order.parcel_size &&
 				location.isAvaible(time, order)
 			) {
@@ -47,11 +51,48 @@ export class StoresService {
 		return result;
 	}
 
+	public async book(userId: number, body: BookPickupsRequest) {}
+
 	private async availableEmployees(
 		store: Store,
-		order: Order
-	): Promise<number> {
-		return 0;
+		order: Order,
+		start: Date
+	): Promise<Employee[]> {
+		const result = [];
+
+		// Remove 5 min from start
+		let startDate = new Date(start);
+		startDate.setMinutes(startDate.getMinutes() - 5);
+
+		let endDate = new Date(start);
+		endDate.setMinutes(
+			endDate.getMinutes() + Number(order.preparation_time) + 5
+		);
+
+		for (const employee of store.employees) {
+			let employeeWithSechdule = await Employee.findOne({
+				where: { id: employee.id },
+				relations: ["schedules"],
+			});
+			const sechules = employeeWithSechdule.schedules;
+
+			if (sechules.length == 0) {
+				result.push(employee);
+			} else {
+				for (const sechule of sechules) {
+					if (
+						!(
+							startDate.getDate() > sechule.start_time.getDate() &&
+							startDate.getDate() < endDate.getDate()
+						)
+					) {
+						result.push(employee);
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	private async syncStores() {

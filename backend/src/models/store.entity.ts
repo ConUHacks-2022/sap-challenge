@@ -15,7 +15,7 @@ export class Store extends BaseEntity {
 	id: number;
 
 	@Column()
-	@ApiProperty()
+	//@ApiProperty()
 	sap_id: number;
 
 	@Column()

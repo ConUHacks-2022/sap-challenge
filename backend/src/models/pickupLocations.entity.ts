@@ -14,10 +14,11 @@ import { Store } from "./store.entity";
 @Entity()
 export class PickupLocation extends BaseEntity {
 	@PrimaryGeneratedColumn()
+	@ApiProperty()
 	id: number;
 
 	@Column()
-	@ApiProperty()
+	//@ApiProperty()
 	sap_id: number;
 
 	@Column()
@@ -37,13 +38,13 @@ export class PickupLocation extends BaseEntity {
 	public async isAvaible(start: Date, order: Order) {
 		const object = await PickupLocation.findOne({
 			where: { id: this.id },
-			relations: ["pickup_location"],
+			relations: ["schedules"],
 		});
 		if (object.schedules.length == 0) {
 			return true;
 		}
 
-		let endDate = new Date();
+		let endDate = new Date(start);
 		endDate.setMinutes(
 			endDate.getMinutes() + Number(order.preparation_time) + 10
 		);

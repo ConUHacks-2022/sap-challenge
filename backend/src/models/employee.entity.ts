@@ -3,6 +3,7 @@ import {
 	BaseEntity,
 	Column,
 	Entity,
+	ManyToMany,
 	ManyToOne,
 	PrimaryGeneratedColumn,
 } from "typeorm";
@@ -24,6 +25,6 @@ export class Employee extends BaseEntity {
 	@ManyToOne(() => Store, (store) => store.employees)
 	store: Store;
 
-	@ManyToOne(() => Schedule, (e) => e.employees)
-	schedule: Schedule;
+	@ManyToMany(() => Schedule, (e) => e.employees)
+	schedules: Schedule[];
 }

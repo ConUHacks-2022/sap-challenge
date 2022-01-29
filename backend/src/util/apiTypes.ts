@@ -36,3 +36,28 @@ export class MeResponse {
 	@ApiProperty({ type: User })
 	user: User;
 }
+
+export class AvailablePickupsRequest {
+	@ApiProperty()
+	order_id: number;
+
+	@ApiProperty()
+	store_id: number;
+
+	@ApiProperty()
+	desired_time: Date;
+}
+
+export class BookPickupsRequest {
+	@ApiProperty()
+	order_id: number;
+
+	@ApiProperty()
+	store_id: number;
+
+	@ApiProperty()
+	pickup_location_id: number;
+
+	@ApiProperty()
+	desired_time: Date;
+}

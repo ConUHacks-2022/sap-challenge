@@ -16,7 +16,7 @@ export class Order extends BaseEntity {
 	id: number;
 
 	@Column()
-	@ApiProperty()
+	//@ApiProperty()
 	sap_id: number;
 
 	@Column()
