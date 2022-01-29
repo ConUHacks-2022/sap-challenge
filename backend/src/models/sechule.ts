@@ -10,6 +10,7 @@ import {
 	PrimaryGeneratedColumn,
 } from "typeorm";
 import { Employee } from "./employee.entity";
+import { Order } from "./order.entity";
 import { PickupLocation } from "./pickupLocations.entity";
 
 @Entity()
@@ -23,6 +24,9 @@ export class Schedule extends BaseEntity {
 	@ManyToMany(() => Employee, (employee) => employee.schedules)
 	@JoinTable()
 	employees: Employee[];
+
+	//@OneToOne(() => Order, (order) => order.schedule)
+	//order: Order;
 
 	@Column()
 	start_time: Date;

@@ -3,7 +3,11 @@ import { AuthGuard } from "@nestjs/passport";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { PickupLocation } from "src/models/pickupLocations.entity";
 import { Store } from "src/models/store.entity";
-import { AvailablePickupsRequest } from "src/util/apiTypes";
+import {
+	AvailablePickupsRequest,
+	BookPickupsRequest,
+	OperationStatus,
+} from "src/util/apiTypes";
 import { AuthUser } from "src/util/decorators";
 import { StoresService } from "./stores.service";
 
@@ -31,5 +35,26 @@ export class StoresController {
 			body.store_id,
 			body.desired_time
 		);
+	}
+
+	@Post("book")
+	@ApiResponse({ type: [OperationStatus] })
+	@UseGuards(AuthGuard("jwt"))
+	public async book(
+		@AuthUser() userId: number,
+		@Body() body: BookPickupsRequest
+	): Promise<OperationStatus> {
+		try {
+			await this.storesService.book(userId, body);
+
+			return {
+				status: "SUCCESS",
+			};
+		} catch (e) {
+			return {
+				status: "FAILED",
+				errors: [(<Error>e).message],
+			};
+		}
 	}
 }

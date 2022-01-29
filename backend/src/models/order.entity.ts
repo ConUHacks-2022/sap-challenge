@@ -4,10 +4,13 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
 	ManyToOne,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
+import { Schedule } from "./sechule";
 import { User } from "./user.entity";
 
 @Entity("orders")
@@ -16,7 +19,7 @@ export class Order extends BaseEntity {
 	id: number;
 
 	@Column()
-	//@ApiProperty()
+	@ApiProperty()
 	sap_id: number;
 
 	@Column()
@@ -33,6 +36,11 @@ export class Order extends BaseEntity {
 
 	@ManyToOne(() => User, (user) => user.orders, { nullable: true })
 	user: User;
+
+	@OneToOne(() => Schedule)
+	@JoinColumn()
+	@ApiProperty()
+	schedule: Schedule;
 
 	@CreateDateColumn()
 	created_at: Date;
