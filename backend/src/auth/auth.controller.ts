@@ -43,7 +43,7 @@ export class AuthController {
 		@Res() response: Response
 	): Promise<void> {
 		try {
-			const user = await this.authService.verifyCode(body.code);
+			const user = await this.authService.verifyCode(body.email, body.code);
 			this.createAuthCookie(user, response);
 		} catch (e) {
 			response.send({

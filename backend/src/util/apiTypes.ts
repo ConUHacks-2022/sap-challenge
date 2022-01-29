@@ -21,7 +21,10 @@ export class CodeRequest {
 
 export class CodeVerificationRequest {
 	@ApiProperty()
-	code: number;
+	code: string;
+
+	@ApiProperty()
+	email: string;
 }
 
 export class AuthResponse extends OperationStatus {
