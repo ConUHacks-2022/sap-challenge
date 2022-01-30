@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
 	BaseEntity,
 	Column,
@@ -19,6 +20,7 @@ export class Schedule extends BaseEntity {
 	id: number;
 
 	@ManyToOne(() => PickupLocation, (location) => location.schedules)
+	@ApiProperty({ type: PickupLocation })
 	pickup_location: PickupLocation;
 
 	@ManyToMany(() => Employee, (employee) => employee.schedules)
@@ -29,8 +31,10 @@ export class Schedule extends BaseEntity {
 	//order: Order;
 
 	@Column()
+	@ApiProperty()
 	start_time: Date;
 
 	@Column()
+	@ApiProperty()
 	end_time: Date;
 }
