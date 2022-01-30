@@ -202,14 +202,17 @@ export class StoresService {
 		}
 
 		let start_date = new Date(start);
-		let endDate = new Date(start);
-		endDate.setMinutes(
-			endDate.getMinutes() + Number(order.preparation_time) + 5
-		);
-
 		let noColict = true;
+
 		for (const sechule of object.schedules) {
-			if (start_date >= sechule.start_time && start_date <= sechule.end_time) {
+			let endDateWithBuffer = new Date(sechule.end_time);
+			endDateWithBuffer.setMinutes(endDateWithBuffer.getMinutes() + 5);
+			let startDateWithBuffer = new Date(sechule.start_time);
+			startDateWithBuffer.setMinutes(startDateWithBuffer.getMinutes() - 5);
+			if (
+				start_date >= startDateWithBuffer &&
+				start_date <= endDateWithBuffer
+			) {
 				noColict = false;
 				break;
 			}

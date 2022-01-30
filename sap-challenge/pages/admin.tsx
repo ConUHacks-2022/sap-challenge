@@ -61,7 +61,7 @@ const Admin: NextPage = () => {
 						start.setMinutes(start.getMinutes() - 5);
 
 						const end = new Date(e.end_time);
-						end.setMinutes(start.getMinutes() + 5);
+						end.setMinutes(end.getMinutes() + 5);
 						return (
 							<Box>
 								<Stack direction={"row"} spacing={"24"}>
