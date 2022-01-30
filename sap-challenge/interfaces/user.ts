@@ -1,6 +1,10 @@
 export interface IUser {
-    name?: string,
-    email?: string,
-    phone?: string,
-    address?: string,
+    id: number,
+    email: string,
+    name: string,
+    address: string,
+    phone: string,
+    is_admin: boolean,
+    create_at?: Date,
+    updated_at?: Date,
 }
