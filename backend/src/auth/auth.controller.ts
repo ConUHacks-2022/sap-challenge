@@ -31,13 +31,16 @@ export class AuthController {
 	public async sendCode(@Body() body: CodeRequest): Promise<OperationStatus> {
 		try {
 			const { code, user } = await this.authService.createCode(body.email);
-			await client.messages.create({
-				body:
-					"You got code from ConUHacks2022 eCommerce Shadi and Noah application. Your code is: " +
-					code,
-				to: "+1" + user.phone, // Text this number
-				from: "+15878495075", // From a valid Twilio number
-			});
+
+			try {
+				await client.messages.create({
+					body:
+						"You got code from ConUHacks2022 eCommerce Shadi and Noah application. Your code is: " +
+						code,
+					to: "+1" + user.phone, // Text this number
+					from: "+15878495075", // From a valid Twilio number
+				});
+			} catch (e) {}
 
 			return {
 				status: "SUCCESS",

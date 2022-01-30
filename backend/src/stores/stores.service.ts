@@ -29,7 +29,7 @@ export class StoresService {
 		//const user = await User.findOne({ where: { id: userId } });
 		const order = await Order.findOne({ where: { id: order_id } });
 		const store = await Store.findOne({
-			where: { id: store_id },
+			where: { id: Number(store_id) },
 			relations: ["pickup_locations", "employees"],
 		});
 
@@ -39,11 +39,13 @@ export class StoresService {
 		const employeesNeeded = order.parcel_size == "L" ? 2 : 1;
 
 		for (const location of store.pickup_locations) {
+			const available = await this.isAvaible(location, time, order);
+			console.log(available);
 			if (
 				(await this.availableEmployees(store, order, time)).length >=
 					employeesNeeded &&
 				location.parcel_size == order.parcel_size &&
-				(await location.isAvaible(time, order))
+				available
 			) {
 				result.push(location);
 			}
@@ -93,8 +95,9 @@ export class StoresService {
 		schedule.start_time = body.desired_time;
 		schedule.end_time = endDate;
 		schedule.pickup_location = location;
-		schedule.save();
 
+		order.schedule = await schedule.save();
+		order.save();
 		return schedule;
 	}
 
@@ -186,5 +189,31 @@ export class StoresService {
 				Logger.error(e);
 			}
 		}
+	}
+
+	public async isAvaible(location: PickupLocation, start: Date, order: Order) {
+		const object = await PickupLocation.findOne({
+			where: { id: location.id },
+			relations: ["schedules"],
+		});
+
+		if (object.schedules.length == 0) {
+			return true;
+		}
+
+		let start_date = new Date(start);
+		let endDate = new Date(start);
+		endDate.setMinutes(
+			endDate.getMinutes() + Number(order.preparation_time) + 5
+		);
+
+		let noColict = true;
+		for (const sechule of object.schedules) {
+			if (start_date >= sechule.start_time && start_date <= sechule.end_time) {
+				noColict = false;
+				break;
+			}
+		}
+		return noColict;
 	}
 }

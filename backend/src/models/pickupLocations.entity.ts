@@ -35,28 +35,4 @@ export class PickupLocation extends BaseEntity {
 
 	@OneToMany(() => Schedule, (s) => s.pickup_location)
 	schedules: Schedule[];
-
-	public async isAvaible(start: Date, order: Order) {
-		const object = await PickupLocation.findOne({
-			where: { id: this.id },
-			relations: ["schedules"],
-		});
-		if (object.schedules.length == 0) {
-			return true;
-		}
-
-		let endDate = new Date(start);
-		endDate.setMinutes(
-			endDate.getMinutes() + Number(order.preparation_time) + 10
-		);
-
-		let noColict = true;
-		for (const sechule of object.schedules) {
-			if (start > sechule.start_time && start < sechule.end_time) {
-				noColict = false;
-				break;
-			}
-		}
-		return noColict;
-	}
 }

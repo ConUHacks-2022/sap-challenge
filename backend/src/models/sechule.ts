@@ -27,8 +27,10 @@ export class Schedule extends BaseEntity {
 	@JoinTable()
 	employees: Employee[];
 
-	//@OneToOne(() => Order, (order) => order.schedule)
-	//order: Order;
+	@OneToOne(() => Order, (order) => order.schedule, {
+		onDelete: "CASCADE", // <---- HERE
+	})
+	order: Order;
 
 	@Column()
 	@ApiProperty()

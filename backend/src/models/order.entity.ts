@@ -37,9 +37,11 @@ export class Order extends BaseEntity {
 	@ManyToOne(() => User, (user) => user.orders, { nullable: true })
 	user: User;
 
-	@OneToOne(() => Schedule)
+	@OneToOne(() => Schedule, {
+		onDelete: "CASCADE", // <---- HERE
+	})
 	@JoinColumn()
-	@ApiProperty()
+	@ApiProperty({ type: () => Schedule })
 	schedule: Schedule;
 
 	@CreateDateColumn()

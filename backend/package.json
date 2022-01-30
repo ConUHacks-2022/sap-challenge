@@ -31,6 +31,7 @@
         "@types/twilio": "^3.19.3",
         "cookie-parser": "^1.4.6",
         "dotenv-safe": "^8.2.0",
+        "fs": "^0.0.1-security",
         "mysql2": "^2.3.3",
         "node-fetch": "^2.6.7",
         "passport": "^0.5.2",

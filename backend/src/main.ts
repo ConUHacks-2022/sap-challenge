@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import cookieParser from "cookie-parser";
 import { createConnection } from "typeorm";
+import fs from "fs";
 
 async function bootstrap() {
 	const connection = await createConnection({
@@ -33,6 +34,7 @@ async function bootstrap() {
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup("api", app, document);
+	fs.writeFileSync("./swagger-spec.json", JSON.stringify(document));
 	app.use(cookieParser());
 	await app.listen(50000);
 }
