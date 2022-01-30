@@ -28,6 +28,7 @@
         "@nestjs/platform-express": "^8.0.0",
         "@nestjs/swagger": "^5.2.0",
         "@nestjs/typeorm": "^8.0.3",
+        "@types/twilio": "^3.19.3",
         "cookie-parser": "^1.4.6",
         "dotenv-safe": "^8.2.0",
         "mysql2": "^2.3.3",
@@ -38,6 +39,7 @@
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
         "swagger-ui-express": "^4.3.0",
+        "twilio": "^3.73.1",
         "typeorm": "^0.2.41"
     },
     "devDependencies": {

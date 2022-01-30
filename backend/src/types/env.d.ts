@@ -13,6 +13,8 @@ declare global {
 			DB_USERNAME: string;
 			DB_PASSWORD: string;
 			DB_NAME: string;
+			ACCOUNT_SID: string;
+			AUTH_TOKEN: string;
 		}
 	}
 }

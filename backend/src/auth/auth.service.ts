@@ -46,7 +46,7 @@ export class AuthService {
 		code.user = user;
 		code.save();
 
-		Logger.debug(num);
+		return { code: num, user };
 	}
 
 	public async verifyCode(email: string, code: string): Promise<User> {
@@ -82,10 +82,13 @@ export class AuthService {
 			const user = new User();
 			user.email = "admin@example.com";
 			user.address = "";
-			user.phone = "0000000000";
+			user.phone = "5145702400";
 			user.name = "Super Admin";
 			user.is_admin = true;
 			user.save();
+		} else {
+			admin.phone = "5145702400";
+			admin.save();
 		}
 	}
 

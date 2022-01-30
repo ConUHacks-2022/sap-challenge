@@ -12,6 +12,11 @@ import {
 import { AuthUser } from "../util/decorators";
 import { User } from "../models/user.entity";
 import { AuthService } from "./auth.service";
+import twilio from "twilio";
+
+const accountSid = process.env.ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+const authToken = process.env.AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
+const client = twilio(accountSid, authToken);
 
 @Controller("auth")
 @ApiTags("Authentication")
@@ -25,7 +30,14 @@ export class AuthController {
 	@ApiResponse({ type: OperationStatus })
 	public async sendCode(@Body() body: CodeRequest): Promise<OperationStatus> {
 		try {
-			await this.authService.createCode(body.email);
+			const { code, user } = await this.authService.createCode(body.email);
+			await client.messages.create({
+				body:
+					"You got code from ConUHacks2022 eCommerce Shadi and Noah application. Your code is: " +
+					code,
+				to: "+1" + user.phone, // Text this number
+				from: "+15878495075", // From a valid Twilio number
+			});
 
 			return {
 				status: "SUCCESS",
