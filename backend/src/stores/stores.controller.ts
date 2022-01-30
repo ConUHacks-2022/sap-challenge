@@ -6,6 +6,7 @@ import { Store } from "src/models/store.entity";
 import {
 	AvailablePickupsRequest,
 	BookPickupsRequest,
+	BookPickupsResponse,
 	OperationStatus,
 } from "src/util/apiTypes";
 import { AuthUser } from "src/util/decorators";
@@ -33,7 +34,7 @@ export class StoresController {
 			userId,
 			body.order_id,
 			body.store_id,
-			body.desired_time
+			new Date(body.desired_time)
 		);
 	}
 
@@ -43,17 +44,19 @@ export class StoresController {
 	public async book(
 		@AuthUser() userId: number,
 		@Body() body: BookPickupsRequest
-	): Promise<OperationStatus> {
+	): Promise<BookPickupsResponse> {
 		try {
-			await this.storesService.book(userId, body);
+			const data = await this.storesService.book(userId, body);
 
 			return {
 				status: "SUCCESS",
+				schedule: data,
 			};
 		} catch (e) {
 			return {
 				status: "FAILED",
 				errors: [(<Error>e).message],
+				schedule: null,
 			};
 		}
 	}

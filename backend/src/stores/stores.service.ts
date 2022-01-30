@@ -37,12 +37,13 @@ export class StoresService {
 		const result: PickupLocation[] = [];
 
 		const employeesNeeded = order.parcel_size == "L" ? 2 : 1;
+
 		for (const location of store.pickup_locations) {
 			if (
 				(await this.availableEmployees(store, order, time)).length >=
 					employeesNeeded &&
 				location.parcel_size == order.parcel_size &&
-				location.isAvaible(time, order)
+				(await location.isAvaible(time, order))
 			) {
 				result.push(location);
 			}
@@ -51,7 +52,51 @@ export class StoresService {
 		return result;
 	}
 
-	public async book(userId: number, body: BookPickupsRequest) {}
+	public async book(userId: number, body: BookPickupsRequest) {
+		// Get available locations
+		const available = await this.availablePickups(
+			userId,
+			body.order_id,
+			body.store_id,
+			body.desired_time
+		);
+
+		let location: PickupLocation | null = null;
+		for (const temp of available) {
+			if (temp.id == body.pickup_location_id) {
+				location = temp;
+				break;
+			}
+		}
+
+		if (!location) {
+			throw new Error("Not availablities on the selected location and/or time");
+		}
+
+		const order = await Order.findOne({ where: { id: body.order_id } });
+		const store = await Store.findOne({
+			where: { id: body.store_id },
+			relations: ["pickup_locations", "employees"],
+		});
+		const employees = await this.availableEmployees(
+			store,
+			order,
+			body.desired_time
+		);
+
+		let endDate = new Date(body.desired_time);
+		endDate.setMinutes(endDate.getMinutes() + Number(order.preparation_time));
+
+		const schedule = new Schedule();
+		schedule.employees =
+			order.parcel_size == "L" ? [employees[0], employees[1]] : [employees[0]];
+		schedule.start_time = body.desired_time;
+		schedule.end_time = endDate;
+		schedule.pickup_location = location;
+		schedule.save();
+
+		return schedule;
+	}
 
 	private async availableEmployees(
 		store: Store,
@@ -75,7 +120,6 @@ export class StoresService {
 				relations: ["schedules"],
 			});
 			const sechules = employeeWithSechdule.schedules;
-
 			if (sechules.length == 0) {
 				result.push(employee);
 			} else {

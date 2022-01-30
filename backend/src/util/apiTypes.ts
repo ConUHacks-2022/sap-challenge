@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Schedule } from "src/models/sechule";
 import { User } from "src/models/user.entity";
 
 // Cookie
@@ -60,4 +61,9 @@ export class BookPickupsRequest {
 
 	@ApiProperty()
 	desired_time: Date;
+}
+
+export class BookPickupsResponse extends OperationStatus {
+	@ApiProperty({ type: Schedule })
+	schedule: Schedule | null;
 }

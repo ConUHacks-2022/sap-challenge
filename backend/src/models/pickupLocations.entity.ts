@@ -1,3 +1,4 @@
+import { Logger } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import {
 	BaseEntity,
@@ -51,15 +52,11 @@ export class PickupLocation extends BaseEntity {
 
 		let noColict = true;
 		for (const sechule of object.schedules) {
-			if (
-				start.getDate() > sechule.start_time.getDate() &&
-				start.getDate() < endDate.getDate()
-			) {
+			if (start > sechule.start_time && start < sechule.end_time) {
 				noColict = false;
 				break;
 			}
 		}
-
 		return noColict;
 	}
 }
