@@ -1,6 +1,7 @@
 {
     "name": "sap-challenge",
     "private": true,
+    "homepage": "http://shadijiha.ddns.net/sap-challenge/",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
