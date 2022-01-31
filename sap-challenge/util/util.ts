@@ -18,7 +18,7 @@ export function toFormikErrors(errors: any) {
 }
 
 export function apiUrl() {
-	return "http://localhost:50000/";
+	return process.env.NEXT_PUBLIC_BACKEND_URL + "/";
 }
 
 export async function postRequest(
