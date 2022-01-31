@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import styles from "./navbar.module.scss";
-import {
-	Menu,
-	MenuButton,
-	MenuDivider,
-	MenuItem,
-	MenuList,
-} from "@chakra-ui/menu";
-import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { getUser } from "../util/util";
 import {

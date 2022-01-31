@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
-import { Welcome } from "../components/welcome";
 import { getUser } from "../util/util";
 import { Login } from "../components/login";
 import { useRouter } from "next/router";

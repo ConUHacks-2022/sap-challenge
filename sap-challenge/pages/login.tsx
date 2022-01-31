@@ -1,10 +1,8 @@
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
-import { Welcome } from "../components/welcome";
 import { getUser } from "../util/util";
 import { Login as LoginComponent } from "../components/login";
 import { Box } from "@chakra-ui/react";
-import img from "../assets/99173.jpg";
 
 const Login: NextPage = () => {
 	const [user, setUser] = useState(null);
