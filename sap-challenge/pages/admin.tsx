@@ -63,7 +63,7 @@ const Admin: NextPage = () => {
 						const end = new Date(e.end_time);
 						end.setMinutes(end.getMinutes() + 5);
 						return (
-							<Box>
+							<Box key={i}>
 								<Stack direction={"row"} spacing={"24"}>
 									<Box>{e.id}</Box>
 									<Box>{e.pickup_location.name}</Box>

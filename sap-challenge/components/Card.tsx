@@ -168,8 +168,8 @@ export function MyCard({
 									ref={selectRef}
 									onChange={fetchLocations}
 								>
-									{stores.map((e) => (
-										<option value={e.id}>
+									{stores.map((e, i) => (
+										<option value={e.id} key={i}>
 											{e.name} ({e.address})
 										</option>
 									))}
@@ -191,8 +191,8 @@ export function MyCard({
 									ref={pickupselectRef}
 								>
 									{locations.map &&
-										locations.map((e) => (
-											<option value={e.id}>
+										locations.map((e, i) => (
+											<option value={e.id} key={i}>
 												{e.name} (Parcel size: {e.parcel_size} only)
 											</option>
 										))}
