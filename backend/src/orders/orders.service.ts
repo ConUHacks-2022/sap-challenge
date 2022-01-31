@@ -11,7 +11,6 @@ export class OrdersService {
 	}
 
 	public async all(userId: number) {
-		await this.syncOrders();
 		return await Order.find({
 			where: { user: { id: userId } },
 			relations: ["schedule"],
